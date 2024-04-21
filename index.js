@@ -12,6 +12,8 @@ const selectorDolarBnaCompra = "#market-scrll-2 > tbody > tr:nth-child(1) > td.b
 const selectorDolarBnaVenta = "#market-scrll-2 > tbody > tr:nth-child(1) > td.sell > a > div > div.sell-value";    
 const selectorDolarTurisata = "#market-scrll-2 > tbody > tr:nth-child(3) > td.sell > a > div > div.sell-value";
 const selectorEuroDolar = ".text-5xl\\/9.font-bold.text-\\[\\#232526\\]"; // Selector simplificado para la cotización euro-dólar
+const selectorEuroYen = 'div[data-test="instrument-price-last"]';
+
 
 let cotizacion = {
   dolarArgentina: {
@@ -22,6 +24,7 @@ let cotizacion = {
     precioDolarTurista: "",
   },
   euroDolar: "",
+  euroYen: "",
   fecha: {
     dia: "",
     hora: ""
@@ -49,6 +52,13 @@ const updateData = async () => {
     cotizacion.euroDolar = $(selectorEuroDolar).text(); // Utilizar el nuevo selector para la cotización euro-dólar
   } catch (error) {
     console.error("Error al obtener la cotización euro-dólar:", error);
+  }
+  try {
+    const {data} = await axios.get('https://es.investing.com/currencies/eur-cny');
+    const $ = cheerio.load(data);
+    cotizacion.euroYen = $(selectorEuroYen).text();
+  } catch (error) {
+    console.log(error);
   }
 };
 

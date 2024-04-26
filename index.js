@@ -13,7 +13,7 @@ const selectorDolarBnaVenta = "#market-scrll-2 > tbody > tr:nth-child(1) > td.se
 const selectorDolarTurisata = "#market-scrll-2 > tbody > tr:nth-child(3) > td.sell > a > div > div.sell-value";
 const selectorEuroDolar = ".text-5xl\\/9.font-bold.text-\\[\\#232526\\]"; // Selector simplificado para la cotización euro-dólar
 const selectorEuroYuan = 'div[data-test="instrument-price-last"]';
-
+const selectorDolarYuan = 'div[data-test="instrument-price-last"]';
 
 let cotizacion = {
   dolarArgentina: {
@@ -25,6 +25,7 @@ let cotizacion = {
   },
   euroDolar: "",
   euroYuan: "",
+  dolarYuan: "",
   fecha: {
     dia: "",
     hora: ""
@@ -47,20 +48,22 @@ const updateData = async () => {
   }
 
   try {
-    const { data } = await axios.get("https://es.investing.com/currencies/eur-usd");
-    const $ = cheerio.load(data);
-    cotizacion.euroDolar = $(selectorEuroDolar).text(); // Utilizar el nuevo selector para la cotización euro-dólar
+    const { data: data2 } = await axios.get("https://es.investing.com/currencies/eur-usd");
+    const $2 = cheerio.load(data2);
+    cotizacion.euroDolar = $2(selectorEuroDolar).text();
+
+    const { data: data1 } = await axios.get("https://es.investing.com/currencies/usd-cny");
+    const $1 = cheerio.load(data1);
+    cotizacion.dolarYuan = $1(selectorDolarYuan).text();
+
+    const { data: data3 } = await axios.get('https://es.investing.com/currencies/eur-cny');
+    const $3 = cheerio.load(data3);
+    cotizacion.euroYuan = $3(selectorEuroYuan).text();
   } catch (error) {
     console.error("Error al obtener la cotización euro-dólar:", error);
   }
-  try {
-    const {data} = await axios.get('https://es.investing.com/currencies/eur-cny');
-    const $ = cheerio.load(data);
-    cotizacion.euroYuan = $(selectorEuroYuan).text();
-  } catch (error) {
-    console.log(error);
-  }
 };
+
 
 updateData();
 

@@ -2,7 +2,7 @@ import express from "express";
 import * as cheerio from "cheerio";
 import axios from "axios";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 const app = express();
 
@@ -10,12 +10,10 @@ const selectorDolarCompra = "#market-scrll-2 > tbody > tr:nth-child(2) > td.buy 
 const selectorDolarVenta = "#market-scrll-2 > tbody > tr:nth-child(2) > td.sell > a > div > div.sell-value";
 const selectorDolarBnaCompra = "#market-scrll-2 > tbody > tr:nth-child(1) > td.buy > a > div > div.buy-value";
 const selectorDolarBnaVenta = "#market-scrll-2 > tbody > tr:nth-child(1) > td.sell > a > div > div.sell-value";    
-const selectorDolarMepCompra = "#market-scrll-2 > tbody > tr:nth-child(6) > td.buy > a > div > div.buy-value";
-const selectorDolarMepVenta = "#market-scrll-2 > tbody > tr:nth-child(6) > td.sell > a > div > div.sell-value";
 const selectorDolarTurisata = "#market-scrll-2 > tbody > tr:nth-child(3) > td.sell > a > div > div.sell-value";
-const selectorEuroDolar = "#main-wrap > section.mainLayout.insideLayout > div > div > div.main-content.row.d-flex.justify-content-start.flex-wrap > div:nth-child(1) > div:nth-child(3) > section > table > tbody > tr:nth-child(1) > td:nth-child(2)";
-const selectorOroKt24 = "#content > div > table:nth-child(13) > tbody > tr:nth-child(1) > td:nth-child(2)";
-const selectorOroKt18 = "#content > div > table:nth-child(10) > tbody > tr:nth-child(1) > td:nth-child(2)";
+const selectorEuroDolar = ".text-5xl\\/9.font-bold.text-\\[\\#232526\\]"; // Selector simplificado para la cotización euro-dólar
+const selectorEuroYuan = 'div[data-test="instrument-price-last"]';
+const selectorDolarYuan = 'div[data-test="instrument-price-last"]';
 
 let cotizacion = {
   dolarArgentina: {
@@ -23,13 +21,11 @@ let cotizacion = {
     precioDolarBlueVenta: "",
     precioDolarBnaCompra: "",
     precioDolarBnaVenta: "",
-    precioDolarMepCompra: "",
-    precioDolarMepVenta: "",
     precioDolarTurista: "",
   },
   euroDolar: "",
   oro: {
-    Kt24: "000",
+    Kt24: "",
     Kt18: ""
   },
   fecha: {
@@ -38,8 +34,7 @@ let cotizacion = {
   }
 };
 
-
-const updateData = async (req,res) => {
+const updateData = async () => {
   try {
     const { data } = await axios.get("https://www.cronista.com/MercadosOnline/dolar.html");
     const $ = cheerio.load(data);
@@ -47,47 +42,36 @@ const updateData = async (req,res) => {
     cotizacion.dolarArgentina.precioDolarBlueVenta = $(selectorDolarVenta).text();
     cotizacion.dolarArgentina.precioDolarBnaCompra = $(selectorDolarBnaCompra).text();
     cotizacion.dolarArgentina.precioDolarBnaVenta = $(selectorDolarBnaVenta).text();
-    cotizacion.dolarArgentina.precioDolarMepCompra = $(selectorDolarMepCompra).text();
-    cotizacion.dolarArgentina.precioDolarMepVenta = $(selectorDolarMepVenta).text();
     cotizacion.dolarArgentina.precioDolarTurista = $(selectorDolarTurisata).text();
     cotizacion.fecha.dia = new Date().toLocaleDateString();
     cotizacion.fecha.hora = new Date().getHours();
   } catch (error) {
-    res.send(error)
+    console.error("Error al obtener la cotización del dólar:", error);
   }
 
   try {
-    const { data } = await axios.get("https://www.eleconomista.es/cruce/EURUSD");
-    const $ = cheerio.load(data);
-    cotizacion.euroDolar = $(selectorEuroDolar).text();
-  } catch (error) {
-    console.log(error);
-  }
+    const { data: data2 } = await axios.get("https://es.investing.com/currencies/eur-usd");
+    const $2 = cheerio.load(data2);
+    cotizacion.euroDolar = $2(selectorEuroDolar).text();
 
-  try {
-    const { data } = await axios.get("https://www.goldpricedata.com/es/gold-rates/europe/gram/24k/");
-    const $ = cheerio.load(data);
-    cotizacion.oro.Kt24 = $(selectorOroKt24).text();
-  } catch (error) {
-    console.log(error);
-  }
+    const { data: data1 } = await axios.get("https://es.investing.com/currencies/usd-cny");
+    const $1 = cheerio.load(data1);
+    cotizacion.dolarYuan = $1(selectorDolarYuan).text();
 
-  try {
-    const { data } = await axios.get("https://www.goldpricedata.com/es/gold-rates/europe/gram/18k/");
-    const $ = cheerio.load(data);
-    cotizacion.oro.Kt18 = $(selectorOroKt18).text();
+    const { data: data3 } = await axios.get('https://es.investing.com/currencies/eur-cny');
+    const $3 = cheerio.load(data3);
+    cotizacion.euroYuan = $3(selectorEuroYuan).text();
   } catch (error) {
-    console.log(error);
+    console.error("Error al obtener la cotización euro-dólar:", error);
   }
 };
 
-updateData();
 
-//setInterval(updateData, updateInterval);
+updateData();
 
 app.get("/", (req, res) => {
   res.send(cotizacion);
-  updateData()
+  updateData();
 });
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}/`));

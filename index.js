@@ -24,10 +24,6 @@ let cotizacion = {
     precioDolarTurista: "",
   },
   euroDolar: "",
-  oro: {
-    Kt24: "",
-    Kt18: ""
-  },
   fecha: {
     dia: "",
     hora: ""
@@ -70,6 +66,7 @@ const updateData = async () => {
 updateData();
 
 app.get("/", (req, res) => {
+  console.log(req);
   res.send(cotizacion);
   updateData();
 });

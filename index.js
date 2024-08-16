@@ -29,7 +29,7 @@ let cotizacion = {
   },
   euroDolar: "",
   oro: {
-    Kt24: "",
+    Kt24: "000",
     Kt18: ""
   },
   fecha: {

@@ -16,6 +16,7 @@ const SELECTORS = {
   dolarYuan: 'div[data-test="instrument-price-last"]',
 };
 
+
 // Estructura para almacenar la cotización
 let cotizacion = {
   dolarArgentina: {

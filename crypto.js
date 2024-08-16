@@ -4,21 +4,32 @@ import axios from "axios";
 
 const router = express.Router();
 
+const SELECTORS = {
+    dolarBlueCompra: "#market-scrll-2 > tbody > tr:nth-child(2) > td.buy > a > div > div.buy-value",
+    dolarBlueVenta: "#market-scrll-2 > tbody > tr:nth-child(2) > td.sell > a > div > div.sell-value",
+    dolarBnaCompra: "#market-scrll-2 > tbody > tr:nth-child(1) > td.buy > a > div > div.buy-value",
+    dolarBnaVenta: "#market-scrll-2 > tbody > tr:nth-child(1) > td.sell > a > div > div.sell-value",
+    dolarTurista: "#market-scrll-2 > tbody > tr:nth-child(3) > td.sell > a > div > div.sell-value",
+    euroDolar: ".text-5xl\\/9.font-bold.text-\\[\\#232526\\]", // Selector simplificado para la cotización euro-dólar
+    euroYuan: 'div[data-test="instrument-price-last"]',
+    dolarYuan: 'div[data-test="instrument-price-last"]',
+  };
+
+  let crypto = {
+    btn:"",
+    eth:""
+  }
+
 // Función para actualizar los datos de criptomonedas
 const updateCrypto = async () => {
   try {
-    // Aquí puedes implementar las llamadas HTTP para obtener los datos de criptomonedas
-    // Por ejemplo:
-    // const { data } = await axios.get('URL_DE_LA_API_O_PAGINA');
-    // const $ = cheerio.load(data);
-    // const precioBitcoin = $(SELECTOR_DE_BITCOIN).text();
-    
-    // Por ahora, solo devolvemos un mensaje de "En proceso"
-    return { message: 'En proceso de implementación' };
+
+      
   } catch (error) {
     console.error("Error al obtener la cotización de criptomonedas:", error);
     return { error: 'Error al obtener la cotización de criptomonedas' };
   }
+  return crypto
 };
 
 // Ruta para obtener la cotización de criptomonedas

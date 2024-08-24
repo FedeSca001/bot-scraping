@@ -41,10 +41,18 @@ https://bot-scraping.onrender.com/monedas
 Rutas Disponibles
 Monedas
 GET /monedas: Devuelve las cotizaciones actuales de diversas monedas, incluyendo el dólar y el euro.
-
 Criptomonedas
-GET /crypto: Esta ruta devuelve las cotizaciones de diversas criptomonedas (actualmente en desarrollo).
-Respuesta de la API
+GET /crypto: Devuelve las cotizaciones de diversas criptomonedas. (Actualmente en desarrollo).
+MotoGP
+GET /motogp: Devuelve las últimas noticias relacionadas con MotoGP, extraídas de fuentes confiables.
+
+GET /motogpmotorsport: Devuelve noticias relacionadas con MotoGP específicamente desde el sitio web de Motorsport.
+
+GET /clasificacionMotogp: Devuelve la clasificación actual de los pilotos en MotoGP.
+
+GET /clasificacionMotogp/moto2: Devuelve la clasificación actual de los pilotos en la categoría Moto2.
+
+GET /clasificacionMotogp/moto3: Devuelve la clasificación actual de los pilotos en la categoría Moto3.
 
 Ejemplo de respuesta para /monedas:
 {
@@ -82,6 +90,7 @@ Node.js: Entorno de ejecución para JavaScript en el servidor.
 Express: Framework web para Node.js que facilita la creación de servidores y APIs.
 Axios: Cliente HTTP que se utiliza para realizar solicitudes a las fuentes de datos.
 Cheerio: Biblioteca que facilita el scraping de HTML para extraer información.
-Contribuciones
+ES6+: Utilización de las últimas características del lenguaje JavaScript.
 
+Contribuciones
 Las contribuciones son bienvenidas. Si deseas colaborar, por favor abre un issue o envía un pull request.

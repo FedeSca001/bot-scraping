@@ -26,7 +26,6 @@ const updateMotogpNews = async () => {
             const titulo = $(element).find(SELECTORS.tituloSelector).text().trim();
             const enlace = $(element).find(SELECTORS.enlaceSelector).attr('href');
             const img = $(element).find(SELECTORS.imgSelector).attr('src');
-            console.log($(element).find(SELECTORS.imgSelector).children());
             
             // Almacenar la información en un objeto
             noticiasMotogp.push({

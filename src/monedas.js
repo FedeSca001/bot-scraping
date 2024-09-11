@@ -14,6 +14,7 @@ const SELECTORS = {
   euroDolar: ".text-5xl\\/9.font-bold.text-\\[\\#232526\\]", // Selector simplificado para la cotización euro-dólar
   euroYuan: 'div[data-test="instrument-price-last"]',
   dolarYuan: 'div[data-test="instrument-price-last"]',
+  euroLibra:'div[data-test="instrument-price-last"]'
 };
 
 
@@ -29,6 +30,7 @@ let cotizacion = {
   euroDolar: "",
   euroYuan: "",
   dolarYuan: "",
+  euroLibra:"",
   fecha: {
     dia: "",
     hora: ""
@@ -67,6 +69,11 @@ const updateData = async () => {
     const { data: dataEuroYuan } = await axios.get('https://es.investing.com/currencies/eur-cny');
     const $3 = cheerio.load(dataEuroYuan);
     cotizacion.euroYuan = $3(SELECTORS.euroYuan).text();
+
+    const { data: euroLibra } = await axios.get('https://es.investing.com/currencies/eur-gbp');
+    const $4 = cheerio.load(euroLibra);
+    cotizacion.euroLibra = $4(SELECTORS.euroYuan).text();
+
   } catch (error) {
     console.error("Error al obtener la cotización euro-dólar:", error);
   }

@@ -44,7 +44,7 @@ const updateFormula1News = async () => {
                         noticiasFormula1.push({
                             index: indexGlobal++,
                             titulo,
-                            enlace: enlace ? `https://www.formula1.com${enlace}` : '',
+                            enlace: enlace ? `${enlace}` : '',
                             img
                         });
                     });

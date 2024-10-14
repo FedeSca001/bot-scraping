@@ -6,7 +6,7 @@ import motogpRouter from './src/motogp.js';
 import mgpMotorSport from './src/motogpMotorSport.js';
 import clasificacionMotogp from './src/clasificacionMotogp.js';
 import formula1Oficial from './src/formula1.js';
-import clasificacionF1Pilotos from './src/clasificacionF1Pilotos.js'
+import clasificacionF1Pilotos from './src/clasificacionF1Pilotos.js';
 import motoGpDiarioAS from './src/motoGpDiarioAS.js';
 import formula1DiarioAS from './src/formula1DiarioAS.js';
 
@@ -15,8 +15,11 @@ const app = express();
 
 // Configurar CORS
 app.use(cors({
-  origin: 'https://show-me-the-data.netlify.app/',
-  methods: ['GET'],
+  origin: 'https://show-me-the-data.netlify.app', // Opción de origen
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+  exposedHeaders: ['Custom-Header'], // Encabezados expuestos (si los necesitas)
+  credentials: true, // Permitir el uso de cookies
 }));
 
 // Ruta principal

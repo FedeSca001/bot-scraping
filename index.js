@@ -14,7 +14,10 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 
 // Configurar CORS
-app.use(cors());
+app.use(cors({
+  origin: 'https://show-me-the-data.netlify.app/',
+  methods: ['GET'],
+}));
 
 // Ruta principal
 app.get("/", (req, res) => {

@@ -1,25 +1,28 @@
 import express from "express";
-import cors from 'cors';  // Importar cors
-import monedasRouter from './src/monedas.js';
-import cryptoRouter from './src/crypto.js';
-import motogpRouter from './src/motogp.js';
-import mgpMotorSport from './src/motogpMotorSport.js';
-import clasificacionMotogp from './src/clasificacionMotogp.js';
-import formula1Oficial from './src/formula1.js';
-import clasificacionF1Pilotos from './src/clasificacionF1Pilotos.js';
-import motoGpDiarioAS from './src/motoGpDiarioAS.js';
-import formula1DiarioAS from './src/formula1DiarioAS.js';
+import cors from 'cors';
+import monedasRouter from './src/scraping/monedas.js';
+import cryptoRouter from './src/scraping/crypto.js';
+import motogpRouter from './src/scraping/motogp.js';
+import mgpMotorSport from './src/scraping/motogpMotorSport.js';
+import clasificacionMotogp from './src/scraping/clasificacionMotogp.js';
+import formula1Oficial from './src/scraping/formula1.js';
+import clasificacionF1Pilotos from './src/scraping/clasificacionF1Pilotos.js';
+import motoGpDiarioAS from './src/scraping/motoGpDiarioAS.js';
+import formula1DiarioAS from './src/scraping/formula1DiarioAS.js';
+import userRouter from './src/router/userRouter.js'; // Importación correcta
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+app.use(express.json()); // Esto es importante
+app.use(express.urlencoded({ extended: true }));
 
 // Configurar CORS
 app.use(cors({
-  origin: 'https://show-me-the-data.netlify.app', // Opción de origen
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
-  exposedHeaders: ['Custom-Header'], // Encabezados expuestos (si los necesitas)
-  credentials: true, // Permitir el uso de cookies
+  origin: 'https://show-me-the-data.netlify.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Custom-Header'],
+  credentials: true,
 }));
 
 // Ruta principal
@@ -37,6 +40,7 @@ app.use("/clasificacionMotogp", clasificacionMotogp);
 app.use("/formula1Oficial", formula1Oficial);
 app.use("/formula1DiarioAS", formula1DiarioAS);
 app.use("/clasificacionF1", clasificacionF1Pilotos);
+app.use("/user", userRouter); // Asociar el enrutador de usuario
 
 // Inicio del servidor
 app.listen(PORT, () => console.log(`http://localhost:${PORT}/`));

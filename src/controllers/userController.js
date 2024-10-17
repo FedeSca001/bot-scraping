@@ -38,11 +38,46 @@ export const registerUser = async (req, res) => {
     }
 };
 
-export const updateUser = async (req, res) =>{
+
+export const updateUser = async (req, res) => {
     try {
-        const {id,user,pass,mail,newpass} = req.params
-        res.send(id,user,pass,mail,newpass)
+        // Extraemos los datos del cuerpo de la solicitud
+        const { id, user, pass, mail, hashedPass, newpass } = req.body;
+
+        // Validamos que todos los campos necesarios estén presentes
+        if (!id || !user || !pass || !hashedPass) {
+            return res.status(400).json({ message: "Todos los campos son obligatorios." });
+        }
+
+        // Comparamos la contraseña proporcionada (pass) con la almacenada (hashedPass)
+        const passwordMatch = await bcryptjs.compare(pass, hashedPass);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ message: "La contraseña actual es incorrecta." });
+        }
+
+        let hashedPassword = hashedPass; // Por defecto mantenemos la contraseña anterior
+
+        // Si hay una nueva contraseña (newpass), la hasheamos
+        if (newpass) {
+            const salt = await bcryptjs.genSalt(10);
+            hashedPassword = await bcryptjs.hash(newpass, salt);
+        }
+
+        // Simulamos la lógica de actualización en una base de datos
+        // En un caso real, deberías conectar aquí con tu base de datos para actualizar el usuario
+        const updatedUser = {
+            id,
+            user,
+            pass: hashedPassword,
+            mail
+        };
+
+        // Si todo salió bien, enviamos la respuesta con el usuario actualizado
+        return res.status(200).json(updatedUser);
+
     } catch (error) {
-        res.send(error)
+        // En caso de error, respondemos con un mensaje de error
+        return res.status(500).json({ message: "Error actualizando el usuario", error });
     }
-}
+};

@@ -2,7 +2,8 @@ import bcryptjs from 'bcryptjs';
 
 export const logUser = async (req, res) => {
     try {
-        res.send('Hacer login')
+        const {id, user, pass, mail} = req.params
+        res.send({id, user, pass, mail})
     } catch (error) {
         res.send(error)
     }
@@ -12,7 +13,8 @@ export const registerUser = async (req, res) => {
     try {
         // Obtener la contraseña del cuerpo de la solicitud
         const { user, pass, mail } = req.body;
-
+        console.log({user,pass,mail});
+        
         if (!user || !pass || !mail) {
             return res.status(400).send('Todos los campos son obligatorios.');
         }

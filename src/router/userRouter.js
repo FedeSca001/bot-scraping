@@ -10,6 +10,6 @@ router.get('/:id/:user/:pass/:mail', logUser );
 router.post('/new',registerUser)
 
 //UPDATE USUARIO
-router.put('/:id/:user/:pass/:hashedPass/:newpass',updateUser)
+router.put('/update',updateUser)
 
 export default router;

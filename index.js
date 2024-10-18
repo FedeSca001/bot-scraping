@@ -25,6 +25,7 @@ app.use(cors({
   credentials: true,
 }));
 
+//app.use(cors())
 // Ruta principal
 app.get("/", (req, res) => {
   res.send('Scraping monedas/crypto');

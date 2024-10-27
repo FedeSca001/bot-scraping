@@ -1,13 +1,5 @@
 import bcryptjs from 'bcryptjs';
 
-export const logUser = async (req, res) => {
-    try {
-        const {id, user, pass, mail} = req.params
-        res.send({id, user, pass, mail})
-    } catch (error) {
-        res.send(error)
-    }
-}
 
 export const registerUser = async (req, res) => {
     try {
@@ -32,7 +24,8 @@ export const registerUser = async (req, res) => {
             id: generateTokenId,
             user: user,
             pass: hashedPassword,
-            mail: mail
+            mail: mail,
+            logued: true
         });
     } catch (error) {
         console.log(error);

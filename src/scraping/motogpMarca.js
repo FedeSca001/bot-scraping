@@ -29,13 +29,16 @@ const updateMarcaNews = async () => {
             const titulo = $(element).find(SELECTORS.tituloSelector).text().trim();
             const encabezado = $(element).find(SELECTORS.encabezadoSelector).text().trim();
             let enlace = $(element).find(SELECTORS.enlaceSelector).attr('href');
-            const img = $(element).find(SELECTORS.imgSelector).attr('srcset') || $(element).find(SELECTORS.imgSelector).attr('src');
+            let img = $(element).find(SELECTORS.imgSelector).attr('srcset') || $(element).find(SELECTORS.imgSelector).attr('src');
 
             // Verifica si el enlace es relativo y ajusta con la URL base
             if (enlace && !enlace.startsWith('http')) {
                 enlace = `${BASE_URL}${enlace}`;
             }
-
+            // Procesar el srcset para tomar solo la primera URL si existe
+            if (img && img.includes(',')) {
+                img = img.split(',')[0].split(' ')[0];  // Toma la primera URL antes de la coma y elimina cualquier espacio adicional
+            }
             // Agrega al array de noticias
             noticiasMarca.push({
                 index: index + 1,

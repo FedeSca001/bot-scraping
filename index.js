@@ -3,6 +3,7 @@ import cors from 'cors';
 import monedasRouter from './src/scraping/monedas.js';
 import cryptoRouter from './src/scraping/crypto.js';
 import motogpRouter from './src/scraping/motogp.js';
+import motoGpMarca from './src/scraping/motogpMarca.js'
 import mgpMotorSport from './src/scraping/motogpMotorSport.js';
 import clasificacionMotogp from './src/scraping/clasificacionMotogp.js';
 import formula1Oficial from './src/scraping/formula1.js';
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/monedas", monedasRouter);
 app.use("/crypto", cryptoRouter);
 app.use("/motogp", motogpRouter);
+app.use("/motoGpMarca", motoGpMarca);
 app.use("/motoGpDiarioAS", motoGpDiarioAS);
 app.use("/motogpmotorSport", mgpMotorSport);
 app.use("/clasificacionMotogp", clasificacionMotogp);

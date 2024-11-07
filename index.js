@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(express.json()); // Esto es importante
 app.use(express.urlencoded({ extended: true }));
-
+/*
 // Configurar CORS
 app.use(cors({
   origin: 'https://show-me-the-data.netlify.app',
@@ -26,8 +26,8 @@ app.use(cors({
   exposedHeaders: ['Custom-Header'],
   credentials: true,
 }));
-
-//app.use(cors())
+*/
+app.use(cors())
 // Ruta principal
 app.get("/", (req, res) => {
   res.send('Scraping monedas/crypto');

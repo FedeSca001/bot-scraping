@@ -6,7 +6,7 @@ const router = express.Router();
 // DOCUMENTACION https://www.weatherapi.com/docs/#weather-icons
 
 const WEATHER_API_URL = "http://api.weatherapi.com/v1/current.json";
-const API_KEY = "966b7ca84f6c4058a4d171342240711";  // Reemplaza "TU_CLAVE_API" con tu clave real de la API
+const API_KEY = "23f9ccbbab0c49d38a3200959240711";  // Reemplaza "TU_CLAVE_API" con tu clave real de la API
 
 let climatología = {};
 

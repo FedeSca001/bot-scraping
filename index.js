@@ -11,6 +11,7 @@ import clasificacionF1Pilotos from './src/scraping/clasificacionF1Pilotos.js';
 import motoGpDiarioAS from './src/scraping/motoGpDiarioAS.js';
 import formula1DiarioAS from './src/scraping/formula1DiarioAS.js';
 import userRouter from './src/router/userRouter.js'; // Importación correcta
+import climaWeatherapi from './src/scraping/climaWeatherapi.js';
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -43,6 +44,7 @@ app.use("/clasificacionMotogp", clasificacionMotogp);
 app.use("/formula1Oficial", formula1Oficial);
 app.use("/formula1DiarioAS", formula1DiarioAS);
 app.use("/clasificacionF1", clasificacionF1Pilotos);
+app.use('/climaWeatherapi', climaWeatherapi);
 app.use("/user", userRouter); // Asociar el enrutador de usuario
 
 // Inicio del servidor

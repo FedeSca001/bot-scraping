@@ -14,9 +14,14 @@ const SELECTORS = {
 let noticiasMotogp = [];
 
 // Función para actualizar las noticias de MotoGP
-const updateMotogpNews = async () => {
+const updateMotogpNews = async (numeroIndex = '') => {  // Parámetro opcional numeroIndex
     try {
-        const { data: noticiaMotogpData } = await axios.get("https://as.com/noticias/moto-gp/");
+        // Si hay numeroIndex, usaremos esa URL; si no, cargamos la principal
+        const url = numeroIndex 
+            ? `https://as.com/noticias/moto-gp/${numeroIndex}/` 
+            : "https://as.com/noticias/moto-gp/";
+
+        const { data: noticiaMotogpData } = await axios.get(url);
         const $ = cheerio.load(noticiaMotogpData);
 
         // Limpiar el array antes de añadir nuevas noticias
@@ -45,9 +50,11 @@ const updateMotogpNews = async () => {
     return noticiasMotogp;
 };
 
-// Ruta para obtener las noticias de MotoGP
-router.get('/', async (req, res) => {
-    const data = await updateMotogpNews();
+// Ruta para obtener las noticias de MotoGP (con o sin numeroIndex)
+router.get('/:numeroIndex?', async (req, res) => {  // El parámetro numeroIndex es opcional
+    const { numeroIndex } = req.params;  // Extraer numeroIndex desde los parámetros de la ruta
+    const data = await updateMotogpNews(numeroIndex);  // Pasar numeroIndex a la función de actualización
+
     if (data.error) {
         res.status(500).json(data);
     } else {

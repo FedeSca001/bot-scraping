@@ -48,5 +48,9 @@ app.use("/clasificacionF1", clasificacionF1Pilotos);
 app.use('/climaWeatherapi', climaWeatherapi);
 app.use("/user", userRouter); // Asociar el enrutador de usuario
 
+app.use((req, res, next) => {
+  res.status(404).send({ error: "Ruta no encontrada" });
+});
+
 // Inicio del servidor
 app.listen(PORT, () => console.log(`http://localhost:${PORT}/`));

@@ -40,19 +40,46 @@ https://bot-scraping.onrender.com/monedas
 
 Rutas Disponibles
 Monedas
-GET /monedas: Devuelve las cotizaciones actuales de diversas monedas, incluyendo el dólar y el euro.
+GET /monedas
+Devuelve las cotizaciones actuales de diversas monedas, incluyendo el dólar y el euro.
+
 Criptomonedas
-GET /crypto: Devuelve las cotizaciones de diversas criptomonedas. (Actualmente en desarrollo).
+GET /crypto
+Devuelve las cotizaciones de diversas criptomonedas. (Actualmente en desarrollo).
+
 MotoGP
-GET /motogp: Devuelve las últimas noticias relacionadas con MotoGP, extraídas de fuentes confiables.
+GET /motogp
+Devuelve las últimas noticias relacionadas con MotoGP, extraídas de fuentes confiables.
 
-GET /motogpmotorsport: Devuelve noticias relacionadas con MotoGP específicamente desde el sitio web de Motorsport.
+GET /motogpmotorsport
+Devuelve noticias relacionadas con MotoGP específicamente desde el sitio web de Motorsport.
 
-GET /clasificacionMotogp: Devuelve la clasificación actual de los pilotos en MotoGP.
+GET /clasificacionMotogp
+Devuelve la clasificación actual de los pilotos en MotoGP.
 
-GET /clasificacionMotogp/moto2: Devuelve la clasificación actual de los pilotos en la categoría Moto2.
+GET /clasificacionMotogp/moto2
+Devuelve la clasificación actual de los pilotos en la categoría Moto2.
 
-GET /clasificacionMotogp/moto3: Devuelve la clasificación actual de los pilotos en la categoría Moto3.
+GET /clasificacionMotogp/moto3
+Devuelve la clasificación actual de los pilotos en la categoría Moto3.
+
+Fórmula 1
+GET /formula1Oficial
+Devuelve noticias sobre la Fórmula 1 extraídas de su sitio oficial.
+
+GET /formula1DiarioAS
+Devuelve noticias sobre la Fórmula 1 extraídas del diario AS.
+
+GET /clasificacionF1/pilotos
+Devuelve la clasificación actual de los pilotos en la categoría Fórmula 1.
+
+GET /clasificacionF1/equipos
+Devuelve la clasificación actual de los equipos en la categoría Fórmula 1.
+
+Clima
+GET /climaWeatherapi
+Devuelve datos climáticos obtenidos de la API de WeatherAPI.
+
 
 Ejemplo de respuesta para /monedas:
 {

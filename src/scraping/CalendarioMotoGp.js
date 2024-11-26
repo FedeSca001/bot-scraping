@@ -5,8 +5,6 @@ import axios from 'axios';
 const router = express.Router();
 const url = 'https://www.marca.com/motor/motogp/calendario.html?intcmp=MENUMIGA&s_kw=calendario#';
 
-
-
 const updateCalendario = async () => {
     try {
         const { data } = await axios.get(url);
@@ -33,7 +31,7 @@ const updateCalendario = async () => {
                 });
 
             // Extraer información de las competiciones
-            const competiciones = [];
+            const competiciones = { motoGp: [], moto2: [], moto3: [] };
             let currentDay = null;
 
             $(element)
@@ -49,7 +47,14 @@ const updateCalendario = async () => {
                         const descripcion = $(child).find('a').text().trim();
                         const hora = $(child).find('.hora').text().trim();
 
-                        competiciones.push({ dia: currentDay, descripcion, link, hora });
+                        // Verificamos el índice y lo clasificamos en motoGp, moto2 o moto3
+                        if (competiciones.motoGp.length < 6) {
+                            competiciones.motoGp.push({ dia: currentDay, descripcion, link, hora });
+                        } else if (competiciones.moto2.length < 5) {
+                            competiciones.moto2.push({ dia: currentDay, descripcion, link, hora });
+                        } else {
+                            competiciones.moto3.push({ dia: currentDay, descripcion, link, hora });
+                        }
                     }
                 });
 
@@ -71,9 +76,6 @@ const updateCalendario = async () => {
         return { error: 'Error al obtener el calendario MotoGp', detalle: error.message };
     }
 };
-
-
-
 
 // Ruta para obtener las noticias de MotoGP
 router.get('/', async (req, res) => {

@@ -22,12 +22,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Configurar CORS
 app.use(cors({
-  origin: 'https://show-me-the-data.netlify.app',
+  origin: ['https://show-me-the-data.netlify.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Custom-Header'],
   credentials: true,
 }));
+
 
 //app.use(cors())
 // Ruta principal

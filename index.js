@@ -29,8 +29,11 @@ app.use(express.urlencoded({ extended: true }));
   credentials: true,
 }));*/
 
-
-app.use(cors())
+app.use(cors({
+  origin: 'https://show-me-the-data.netlify.app',
+  credentials: true
+}));
+//app.use(cors())
 // Ruta principal
 app.get("/", (req, res) => {
   res.send('Scraping monedas/crypto');

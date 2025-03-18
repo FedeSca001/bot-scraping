@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 }));*/
 
 
-//app.use(cors())
+app.use(cors())
 // Ruta principal
 app.get("/", (req, res) => {
   res.send('Scraping monedas/crypto');

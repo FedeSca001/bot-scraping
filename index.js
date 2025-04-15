@@ -19,7 +19,6 @@ const app = express();
 app.use(express.json()); // Esto es importante
 app.use(express.urlencoded({ extended: true }));
 
-
 // Configurar CORS
 /*app.use(cors({
   origin: 'https://show-me-the-data.netlify.app/',

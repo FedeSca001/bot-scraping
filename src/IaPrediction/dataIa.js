@@ -23,31 +23,31 @@ const resultadosSession = async (link) => {
       let tiempo = t.split(' ')[1] ? t.split(' ')[1] : t;
 
       if (nombre) {
-        // Dividir el tiempo en minutos y segundos
         let [minuto, segundos] = tiempo.split(':').map((t) => t.padStart(2, '0'));
 
-        // Convertir el tiempo a segundos
         const tiempoEnSegundos = parseFloat(minuto) * 60 + parseFloat(segundos);
 
-        // Convertir los segundos a minutos decimales
         const tiempoEnMinutosDecimales = tiempoEnSegundos / 60;
 
-        // Si hay un primer tiempo en el resultado, calculamos la diferencia con el primer tiempo
         if (resultado.length > 0) {
-          const primerTiempo = resultado[0].tiempo;  // Primer tiempo en formato decimal
+          const primerTiempo = resultado[0].tiempo;
           const primerTiempoEnSegundos = parseFloat(primerTiempo) * 60;
-          const diferenciaSegundos = tiempoEnSegundos - primerTiempoEnSegundos;  // Diferencia en segundos
+          const diferenciaSegundos = tiempoEnSegundos + primerTiempoEnSegundos;
 
-          // Convertir la diferencia a minutos decimales
+
           const diferenciaMinutosDecimales = diferenciaSegundos / 60;
 
-          // Guardar el tiempo como minutos decimales
-          tiempo = diferenciaMinutosDecimales.toFixed(3); // Redondear a 3 decimales
+          tiempo = diferenciaMinutosDecimales.toFixed(3);
         } else {
-          // Si no hay primer tiempo, guardar el tiempo en minutos decimales
-          tiempo = tiempoEnMinutosDecimales.toFixed(3); // Redondear a 3 decimales
-        }
 
+          tiempo = tiempoEnMinutosDecimales.toFixed(3);
+        }
+        // Normalizar el tiempo para evitar inconsistencias
+        if (tiempo.includes('.')) {
+          tiempo = parseFloat(tiempo).toFixed(3);
+        } else {
+          tiempo = parseFloat(tiempo).toFixed(0);
+        }
         // Evitar duplicados
         const exists = resultado.some((entry) => entry.nombre === nombre && entry.equipo === equipo && entry.tiempo === tiempo);
         if (!exists) {

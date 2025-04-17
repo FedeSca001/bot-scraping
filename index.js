@@ -13,7 +13,6 @@ import formula1DiarioAS from './src/scraping/formula1DiarioAS.js';
 import userRouter from './src/router/userRouter.js';
 import calendarioMotoGp from './src/scraping/CalendarioMotoGp.js';
 import dataIa from './src/IaPrediction/dataIa.js';
-
 const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(express.json()); // Esto es importante

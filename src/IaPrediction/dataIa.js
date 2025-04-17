@@ -1,6 +1,7 @@
 import express from 'express';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
+import iconv from 'iconv-lite';
 
 const router = express.Router();
 
@@ -9,21 +10,42 @@ const url = 'https://www.marca.com/motor/motogp/calendario.html?intcmp=MENUMIGA&
 // Función para extraer resultados desde una URL de sesión
 const resultadosSession = async (link) => {
   try {
-    const { data } = await axios.get(link);
-    const $ = cheerio.load(data);
+    const { data: buffer } = await axios.get(link, { responseType: 'arraybuffer' });
+    const decodedData = iconv.decode(buffer, 'latin1');
+    const $ = cheerio.load(decodedData);
 
     const resultado = [];
 
     $('div.ue-table-ranking-marca table tbody tr').each((i, row) => {
       const nombre = $(row).find('th.is-main span.ue-table-ranking__race-driver-name').text().trim();
       const equipo = $(row).find('td.ue-table-ranking__race-driver-team').text().trim();
-      const tiempo = $(row).find('td.ue-table-ranking__race-driver-time').text().trim();
+      const t = $(row).find('td.ue-table-ranking__race-driver-time').text().trim();
+      let tiempo = t.split(' ')[1] ? t.split(' ')[1] : t;
 
       if (nombre) {
-        resultado.push({ nombre, equipo, tiempo });
+      let [minuto, segundos] = tiempo.split(':').map((t) => t.padStart(2, '0'));
+
+      if (resultado.length > 0) {
+        const [primerTiempoMin, primerTiempoSeg] = resultado[0].tiempo.split(':').map(parseFloat);
+        const totalSegundosPrimerTiempo = primerTiempoMin * 60 + primerTiempoSeg;
+        const totalSegundosActual = parseFloat(minuto) * 60 + parseFloat(segundos);
+        const tiempoTotalSegundos = totalSegundosPrimerTiempo + totalSegundosActual;
+
+        const minutosTotales = Math.floor(tiempoTotalSegundos / 60);
+        const segundosTotales = (tiempoTotalSegundos % 60).toFixed(3).padStart(6, '0');
+
+        minuto = minutosTotales.toString().padStart(2, '0');
+        segundos = segundosTotales;
+      }
+
+      // Avoid duplicates by checking if the current entry already exists in the resultado array
+      const exists = resultado.some((entry) => entry.nombre === nombre && entry.equipo === equipo && entry.tiempo === `${minuto}:${segundos}`);
+      if (!exists) {
+        resultado.push({ nombre, equipo, tiempo: `${minuto}:${segundos}` });
+      }
       }
     });
-
+    
     return resultado;
   } catch (err) {
     console.error('Error en resultadosSession:', err.message);
@@ -33,12 +55,12 @@ const resultadosSession = async (link) => {
 
 const dataObject = async () => {
   try {
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
+    const { data: buffer } = await axios.get(url, { responseType: 'arraybuffer' });
+    const decodedData = iconv.decode(buffer, 'latin1');
+    const $ = cheerio.load(decodedData);
 
     const calendario = [];
 
-    // Seleccionamos todas las tarjetas de gran premio
     const elements = $('.gran-premio__element').toArray();
 
     for (const [index, element] of elements.entries()) {
@@ -47,7 +69,6 @@ const dataObject = async () => {
       const fecha = el.find('.gran-premio__date').text().trim();
       const circuito = el.find('.gran-premio__circuit-name').text().trim();
 
-      // Extraer podio
       const podium = [];
       el.find('.category-motogp .gran-premio__podium-item').each((i, podiumItem) => {
         const position = $(podiumItem).find('.gran-premio__podium-data').text().trim();
@@ -56,7 +77,6 @@ const dataObject = async () => {
         podium.push({ position, piloto, bandera });
       });
 
-      // Extraer competiciones
       const competiciones = { motoGp: [], moto2: [], moto3: [] };
       let currentDay = null;
 

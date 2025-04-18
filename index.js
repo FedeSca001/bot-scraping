@@ -13,6 +13,8 @@ import formula1DiarioAS from './src/scraping/formula1DiarioAS.js';
 import userRouter from './src/router/userRouter.js';
 import calendarioMotoGp from './src/scraping/CalendarioMotoGp.js';
 import dataIa from './src/IaPrediction/dataIa.js';
+import timeTable from './src/scraping/TimesTable.js';
+
 const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(express.json()); // Esto es importante
@@ -51,6 +53,7 @@ app.use("/clasificacionF1", clasificacionF1Pilotos);
 app.use("/user", userRouter); // Asociar el enrutador de usuario
 app.use('/calendarioMotoGp', calendarioMotoGp);
 app.use("/dataTrain", dataIa);
+app.use("/timeTable", timeTable);
 
 app.use((req, res, next) => {
   res.status(404).send({ error: "Ruta no encontrada" });
